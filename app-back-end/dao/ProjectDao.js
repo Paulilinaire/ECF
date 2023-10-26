@@ -61,8 +61,4 @@ export class ProjectDao {
         return true;
     }
 
-    searchByStatus(status) {
-        return this.projects.filter(project => project.status === status)
-    }
-
 }
