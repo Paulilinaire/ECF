@@ -4,15 +4,16 @@ import './index.css';
 import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
 import store from './store';
-import App from './App';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "bootstrap-icons/font/bootstrap-icons.css";
+import { RouterProvider } from 'react-router-dom';
+import router from './app-routing';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-    <App />
+      <RouterProvider router={router} />
     </Provider>
   </React.StrictMode>
 );

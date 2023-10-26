@@ -1,15 +1,17 @@
 import { useRef } from "react";
-import { useDispatch } from "react-redux";
-import { postProject, setFormMode } from "../components/projects/projectSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { putProject } from "../projectSlice";
+import { setFormMode } from "../projectSlice";
 
-const AddProject = () => {
+const EditProject = () => {
     const dispatch = useDispatch()
+    const selectedProject = useSelector(state => state.projects.selectedProject)
 
     const titleRef = useRef()
     const contentRef = useRef()
     const statusRef = useRef()
 
-    const addFormHandler = (event) => {
+    const editFormHandler = (event) => {
         event.preventDefault()
 
         const newProject = {
@@ -17,26 +19,27 @@ const AddProject = () => {
             content: contentRef.current.value,
             status: statusRef.current.value,
         }
-        dispatch(postProject(newProject))
-        dispatch(setFormMode("add"))
+        dispatch(putProject({...newProject, id: selectedProject.id}))
+        dispatch(setFormMode("edit"))
+        console.log(newProject);
     }
 
     return ( 
         <>
-            <h3>Ajouter un projet</h3>
+            <h3>Editer ce projet</h3>
             <hr />
-            <form onSubmit={addFormHandler}>
+            <form onSubmit={editFormHandler}>
                 <div className="mb-3">
                     <label htmlFor="title" className="form-label">Titre:</label>
-                    <input type="text" className="form-control" required ref={titleRef}/>
+                    <input type="text" className="form-control" required ref={titleRef} defaultValue={selectedProject.title}/>
                 </div>
                 <div className="mb-3">
                     <label htmlFor="content" className="form-label">Contenu:</label>
-                    <input type="text" className="form-control" required ref={contentRef}/>
+                    <textarea className="form-control" rows="3" ref={contentRef} defaultValue={selectedProject.content}></textarea>
                 </div>
                 <div className="mb-3">
                     <label htmlFor="status" className="form-label">Statut:</label>
-                    <select name="status" id="status" className="form-select" required ref={statusRef}>
+                    <select name="status" id="status" className="form-select" required ref={statusRef} defaultValue={selectedProject.status}>
                          <option>Non débuté</option>
                          <option>En cours</option>
                          <option>En attente</option>
@@ -44,11 +47,11 @@ const AddProject = () => {
                     </select>
                 </div>
                 <div className="text-end">
-                    <button className="btn btn-success">Ajouter</button>
+                    <button className="btn btn-warning">Editer</button>
                 </div>
             </form>
         </>
      );
 }
  
-export default AddProject;
+export default EditProject;
