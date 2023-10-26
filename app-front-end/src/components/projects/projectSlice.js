@@ -20,7 +20,7 @@ export const postProject = createAsyncThunk(
         const response = await fetch("http://127.0.0.1:3002/projects", {
             method: "POST",
             headers: {
-                "Content-Type" : "application.json"
+                "Content-Type" : "application/json"
             },
                 body: JSON.stringify(newProject)
         })
@@ -29,7 +29,7 @@ export const postProject = createAsyncThunk(
         }
         const data = await response.json()
         return {
-            id: data.name, ...newProject
+            id: data.id, ...newProject
         }
     }
 )
@@ -40,7 +40,7 @@ export const putProject = createAsyncThunk(
         const response = await fetch(`http://127.0.0.1:3002/projects/${project.id}`, {
             method: "PUT",
             headers: {
-                "Content-Type" : "application.json"
+                "Content-Type" : "application/json"
             },
                 body: JSON.stringify(project)
         })
@@ -64,7 +64,6 @@ export const deleteProject = createAsyncThunk(
         if(!response.ok) {
             throw new Error("Something went wrong during the DELETE request")
         }
-        const data = await response.json()
         return selectedProject.id
 
     }

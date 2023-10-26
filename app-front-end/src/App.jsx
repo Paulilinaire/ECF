@@ -7,11 +7,15 @@ import { fetchProjects } from './components/projects/projectSlice';
 import { useEffect } from 'react';
 import EditProject from './components/projects/forms/EditProject';
 import DeleteProject from './components/projects/forms/DeleteProject';
+import { setFilter } from './components/filter/filterSlice';
+
 
 function App() {
   const formMode = useSelector(state => state.projects.formMode)
   const projects = useSelector(state => state.projects.projects)
   const dispatch = useDispatch()
+  const filterBy = useSelector(state => state.filter.filter)
+  const filter = useSelector(state => state.filter.filter)
 
   const refreshProjects = async () => {
     try {
@@ -58,23 +62,23 @@ function App() {
               <h3>Projects</h3>
               <button className='btn btn-success' onClick={() => dispatch(setFormMode("add"))}><i class="bi bi-plus-circle me-2"></i>Ajouter Projet</button>
             </div>
-            <div>
-                {/* <input
+            <div className='col-3'>
+                <input
                     onChange={(e) => dispatch(setFilter(e.target.value))}
                     type="text"
+                    className='form-control'
                     value={filter}
-                    placeholder="filter by title"
-                  ></input> */}
+                    placeholder="Filtrer par statut"
+                  ></input>
             </div>
             <hr />
             <div className="d-flex flex-wrap align-items-center">
             {
               projects.length === 0 ? (
-                <p>There is no project...</p>
-              // ) : projects.filter((project) =>
-              // filterBy ? project.title.toLowerCase().includes(filterBy) : true
-              ) :
-              projects.map(project => <ProjectDisplay key={project.id} project={project} />)
+                <p>Il n'y a pas de projet...</p>
+              ) : projects.filter((project) =>
+              filterBy ? project.status.toLowerCase().startsWith(filterBy) : true
+              ).map(project => <ProjectDisplay key={project.id} project={project} />)
             }
             </div>
           </div>
